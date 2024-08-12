@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { error } from '@sveltejs/kit';
-
 	let day = '';
 	let month = '';
 	let year = '';
@@ -8,12 +6,17 @@
 	let dayLabel = '--';
 	let monthLabel = '--';
 	let yearLabel = '--';
-	let errorYear: string | undefined;
-	let errorMonth: string | undefined;
-	let errorDay: string | undefined;
 
+	let errorYear = '';
+	let errorMonth = '';
+	let errorDay = '';
+
+	$: hasError = errorYear !== '' && errorMonth !== '' && errorDay !== '';
 	function buttonOnClick() {
-		if (isValidYear(year) && isValidMonth(month) && isValidDay(day)) {
+		let _isValidYear = isValidYear(year);
+		let _isValidMonth = isValidMonth(month);
+		let _isValidDay = isValidDay(day);
+		if (_isValidYear && _isValidMonth && _isValidDay) {
 			yearLabel = `${calculateYear(year)}`;
 			dayLabel = `${calculateDay(day)}`;
 			monthLabel = `${calculateMonth(month)}`;
@@ -23,74 +26,85 @@
 			monthLabel = '--';
 		}
 	}
-	function isValidYear(year: number): boolean {
-		errorYear = undefined;
+	function isValidYear(year: string): boolean {
+		errorYear = '';
+		let parsedValue = parseInt(year);
+		if (isNaN(parsedValue)) {
+			errorYear = 'Must be a valid number';
+			return false;
+		}
 		const minYear = 1900;
 		const maxYear = new Date().getFullYear();
-		const isValid = year >= minYear && year <= maxYear;
+		const isValid = parsedValue >= minYear && parsedValue <= maxYear;
 		if (!isValid) {
-			errorYear = 'Invalid yeahhhh';
+			errorYear = 'Must be in the past ';
 		}
-
 		return isValid;
 	}
-	function isValidMonth(month: number): boolean {
-		errorMonth = undefined;
+	function isValidMonth(month: string): boolean {
+		errorMonth = '';
+		let parsedValue = parseInt(month);
+		if (isNaN(parsedValue)) {
+			errorMonth = 'Must be a valid number';
+			return false;
+		}
 		const minMonth = 1;
 		const maxMonth = 12;
-		const isValid = month >= minMonth && month <= maxMonth;
+		const isValid = parsedValue >= minMonth && parsedValue <= maxMonth;
 		if (!isValid) {
-			errorMonth = 'Invalid month';
+			errorMonth = 'Must be a valid month';
 		}
 		return isValid;
 	}
-	function isValidDay(day: number): boolean {
-		errorDay = undefined;
+	function isValidDay(day: string): boolean {
+		errorDay = '';
+		let parsedValue = parseInt(day);
+		if (isNaN(parsedValue)) {
+			errorDay = 'Must be a valid number';
+			return false;
+		}
 		const minDay = 1;
 		const maxDay = 31;
-		const isValid = day >= minDay && day <= maxDay;
+		const isValid = parsedValue >= minDay && parsedValue <= maxDay;
 		if (!isValid) {
-			errorDay = 'Invalid day';
+			errorDay = 'Must be a valid day';
 		}
 		return isValid;
 	}
-	function calculateYear(year: number) {
+	function calculateYear(year: string) {
 		const currentDate = new Date();
 		const currentYear = currentDate.getFullYear();
-		const calculateYear = currentYear - year;
-		return calculateYear;
+		return currentYear - parseInt(year);
 	}
-	function calculateMonth(month: number) {
+	function calculateMonth(month: string) {
 		const currentDate = new Date();
 		const currentMonth = currentDate.getMonth();
-		const calculateMonth = currentMonth - month + 1;
-		return calculateMonth;
+		return currentMonth - parseInt(month) + 1;
 	}
 
-	function calculateDay(day: number) {
+	function calculateDay(day: string) {
 		const currentDate = new Date();
 		const currentDay = currentDate.getDate();
-		const calculateDay = currentDay - day;
-		return calculateDay;
+		return currentDay - parseInt(day);
 	}
 </script>
 
 <div class="calculator-container">
-	<div class="inputs error">
+	<div class="inputs" class:error={hasError}>
 		<label>
 			<span>day</span>
 			<input type="text" placeholder="DD" bind:value={day} />
-			<span>This field is required</span>
+			<span>{errorDay}</span>
 		</label>
 		<label>
 			<span>month</span>
 			<input type="text" placeholder="MM" bind:value={month} />
-			<span>This field is required</span>
+			<span>{errorMonth}</span>
 		</label>
 		<label>
 			<span>year</span>
 			<input type="text" placeholder="YYYY" bind:value={year} />
-			<span>This field is required</span>
+			<span>{errorYear}</span>
 		</label>
 	</div>
 	<button on:click={buttonOnClick}>
@@ -129,6 +143,7 @@
 					font-size: 14px;
 					font-weight: normal;
 					text-transform: none;
+					height: 21px;
 				}
 				& span:first-child {
 					letter-spacing: 3.5px;
@@ -142,6 +157,14 @@
 					}
 				}
 			}
+		}
+		& button {
+			background-color: hsl(259, 100%, 65%);
+			border-radius: 100%;
+			height: 96px;
+			width: 96px;
+			display: grid;
+			place-items: center;
 		}
 	}
 </style>
