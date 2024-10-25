@@ -11,15 +11,30 @@
 	let errorMonth = '';
 	let errorDay = '';
 
-	$: hasError = errorYear !== '' && errorMonth !== '' && errorDay !== '';
+	$: hasError = errorYear !== '' || errorMonth !== '' || errorDay !== '';
 	function buttonOnClick() {
 		let _isValidYear = isValidYear(year);
 		let _isValidMonth = isValidMonth(month);
 		let _isValidDay = isValidDay(day);
 		if (_isValidYear && _isValidMonth && _isValidDay) {
-			yearLabel = `${calculateYear(year)}`;
-			dayLabel = `${calculateDay(day)}`;
-			monthLabel = `${calculateMonth(month)}`;
+			let calculatedYear = calculateYear(year);
+			let calculatedMonth = calculateMonth(month);
+			let calculatedDay = calculateDay(day);
+
+			if (calculatedDay < 0) {
+				calculatedMonth = calculatedMonth - 1;
+				const currentDate = new Date();
+				const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
+				calculatedDay += lastMonth.getDate();
+			}
+			if (calculatedMonth < 0) {
+				calculatedYear = calculatedYear - 1;
+				calculatedMonth = calculatedMonth + 12;
+			}
+
+			yearLabel = `${calculatedYear}`;
+			dayLabel = `${calculatedDay}`;
+			monthLabel = `${calculatedMonth}`;
 		} else {
 			yearLabel = '--';
 			dayLabel = '--';
@@ -89,82 +104,79 @@
 	}
 </script>
 
-<div class="calculator-container">
-	<div class="inputs" class:error={hasError}>
-		<label>
-			<span>day</span>
-			<input type="text" placeholder="DD" bind:value={day} />
-			<span>{errorDay}</span>
-		</label>
-		<label>
-			<span>month</span>
-			<input type="text" placeholder="MM" bind:value={month} />
-			<span>{errorMonth}</span>
-		</label>
-		<label>
-			<span>year</span>
-			<input type="text" placeholder="YYYY" bind:value={year} />
-			<span>{errorYear}</span>
-		</label>
+<main>
+	<div class="calculator-container">
+		<div class="inputs" class:error={hasError}>
+			<label>
+				<span>day</span>
+				<input type="text" placeholder="DD" bind:value={day} />
+				<span>{errorDay}</span>
+			</label>
+			<label>
+				<span>month</span>
+				<input type="text" placeholder="MM" bind:value={month} />
+				<span>{errorMonth}</span>
+			</label>
+			<label>
+				<span>year</span>
+				<input type="text" placeholder="YYYY" bind:value={year} />
+				<span>{errorYear}</span>
+			</label>
+		</div>
+		<div class="relative flex justify-center md:justify-end">
+			<hr class="absolute top-1/2 w-full" />
+			<button on:click={buttonOnClick}>
+				<img src="/icon-arrow.svg" alt="button" />
+			</button>
+		</div>
+		<div class="output">
+			<span><span>{yearLabel}</span> years</span>
+			<span><span>{monthLabel}</span> months</span>
+			<span><span>{dayLabel}</span> days</span>
+		</div>
 	</div>
-	<button on:click={buttonOnClick}>
-		<img src="/icon-arrow.svg" alt="button" />
-	</button>
-	<div class="flex flex-col">
-		<span class="output year"> {yearLabel} years</span>
-		<span class="output month">{monthLabel} months</span>
-		<span class="output day">{dayLabel} days</span>
-	</div>
-</div>
+</main>
 
 <style lang="postcss">
-	.calculator-container {
-		width: 840px;
-		height: 651px;
-		background-color: white;
-		border-radius: 24px 24px 200px 24px;
-		padding: 56px;
-		& .inputs {
-			display: flex;
-			gap: 32px;
-			& label {
-				@apply text-gray-500 uppercase font-bold;
-				display: flex;
-				flex-direction: column;
-				width: 160px;
-				justify-content: space-between;
-				& input {
-					padding: 12px 24px;
-					border-radius: 8px;
-					border: 1px solid gray;
-				}
-				& span:last-child {
-					font-style: italic;
-					font-size: 14px;
-					font-weight: normal;
-					text-transform: none;
-					height: 21px;
-				}
-				& span:first-child {
-					letter-spacing: 3.5px;
-				}
-			}
-			&&.error {
+	main {
+		@apply h-screen grid place-content-center bg-gray-100;
+		& .calculator-container {
+			@apply bg-white rounded-[24px_24px_200px_24px] m-3 p-6;
+			& .inputs {
+				@apply grid grid-cols-3 gap-4 mb-8;
 				& label {
-					color: red;
+					@apply flex flex-col  justify-between text-[var(--smokey-grey)] uppercase font-bold;
 					& input {
-						border-color: red;
+						@apply p-3 rounded-xl border border-[var(--smokey-grey)] text-3xl cursor-pointer outline-[var(--purple)];
+					}
+					& span:first-child {
+						@apply tracking-[3.5px] mb-1;
+					}
+				}
+				&&.error {
+					& label {
+						@apply text-[var(--light-red)];
+						& input {
+							@apply border border-[var(--light-red)];
+						}
 					}
 				}
 			}
-		}
-		& button {
-			background-color: hsl(259, 100%, 65%);
-			border-radius: 100%;
-			height: 96px;
-			width: 96px;
-			display: grid;
-			place-items: center;
+			& button {
+				@apply grid place-items-center bg-[var(--purple)] rounded-full h-14 w-14 z-10;
+				& img {
+					@apply w-6 h-6;
+				}
+				&:hover {
+					@apply bg-[var(--off-black)];
+				}
+			}
+			& .output {
+				@apply grid leading-[110%] text-6xl italic font-extrabold tracking-[-2.08px] my-6;
+				& > span > span {
+					@apply text-[var(--purple)] text-6xl;
+				}
+			}
 		}
 	}
 </style>
