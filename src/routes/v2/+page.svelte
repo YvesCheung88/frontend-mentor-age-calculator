@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 	const inputs: Record<string, string> = {
 		day: '',
 		month: '',
@@ -97,4 +97,4 @@
 			}
 		}
 	}
-</style>
+</style> -->

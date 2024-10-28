@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { base } from '$app/paths';
+
 	let day = '';
 	let month = '';
 	let year = '';
@@ -130,7 +132,7 @@
 		<div class="button-wrapper">
 			<hr class="custom-hr" />
 			<button on:click={buttonOnClick}>
-				<img src="/icon-arrow.svg" alt="button" />
+				<img src="{base}/images/icon-arrow.svg" alt="button" />
 			</button>
 		</div>
 		<div class="output">
