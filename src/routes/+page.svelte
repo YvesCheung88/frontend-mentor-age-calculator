@@ -108,23 +108,23 @@
 	<div class="calculator-container">
 		<div class="inputs" class:error={hasError}>
 			<label>
-				<span>day</span>
+				<span>DAY</span>
 				<input type="text" placeholder="DD" bind:value={day} />
 				<span>{errorDay}</span>
 			</label>
 			<label>
-				<span>month</span>
+				<span>MONTH</span>
 				<input type="text" placeholder="MM" bind:value={month} />
 				<span>{errorMonth}</span>
 			</label>
 			<label>
-				<span>year</span>
+				<span>YEAR</span>
 				<input type="text" placeholder="YYYY" bind:value={year} />
 				<span>{errorYear}</span>
 			</label>
 		</div>
-		<div class="relative flex justify-center md:justify-end">
-			<hr class="absolute top-1/2 w-full" />
+		<div class="button-wrapper">
+			<hr class="custom-hr" />
 			<button on:click={buttonOnClick}>
 				<img src="/icon-arrow.svg" alt="button" />
 			</button>
@@ -143,36 +143,44 @@
 		& .calculator-container {
 			@apply bg-white rounded-[24px_24px_200px_24px] m-3 p-6;
 			& .inputs {
-				@apply grid grid-cols-3 gap-4 mb-8;
+				@apply grid grid-cols-3 gap-4 my-6 md:grid-cols-4 md:my-4;
 				& label {
-					@apply flex flex-col  justify-between text-[var(--smokey-grey)] uppercase font-bold;
+					@apply flex flex-col  justify-between text-[var(--smokey-grey)]  font-bold;
+
 					& input {
-						@apply p-3 rounded-xl border border-[var(--smokey-grey)] text-3xl cursor-pointer outline-[var(--purple)];
+						@apply p-3 rounded-xl border border-[var(--smokey-grey)] text-2xl cursor-pointer outline-[var(--purple)] md:w-32 text-black;
 					}
 					& span:first-child {
 						@apply tracking-[3.5px] mb-1;
 					}
+					& span:last-child {
+						@apply text-sm font-normal mt-1;
+					}
 				}
-				&&.error {
-					& label {
-						@apply text-[var(--light-red)];
-						& input {
-							@apply border border-[var(--light-red)];
-						}
+				&.error label {
+					@apply text-[var(--light-red)];
+					& input {
+						@apply border border-[var(--light-red)];
 					}
 				}
 			}
-			& button {
-				@apply grid place-items-center bg-[var(--purple)] rounded-full h-14 w-14 z-10;
-				& img {
-					@apply w-6 h-6;
+			& .button-wrapper {
+				@apply relative flex justify-center md:justify-end;
+				& .custom-hr {
+					@apply absolute top-1/2 w-full;
 				}
-				&:hover {
-					@apply bg-[var(--off-black)];
+				& button {
+					@apply grid place-items-center bg-[var(--purple)] rounded-full p-5 z-10 md:p-6;
+					& img {
+						@apply size-6 md:size-7;
+					}
+					&:hover {
+						@apply bg-[var(--off-black)];
+					}
 				}
 			}
 			& .output {
-				@apply grid leading-[110%] text-6xl italic font-extrabold tracking-[-2.08px] my-6;
+				@apply grid leading-[110%] text-6xl italic font-extrabold tracking-[-2.08px] my-7 md:my-4;
 				& > span > span {
 					@apply text-[var(--purple)] text-6xl;
 				}
