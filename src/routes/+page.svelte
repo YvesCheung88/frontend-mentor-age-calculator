@@ -12,6 +12,7 @@
 	let errorDay = '';
 
 	$: hasError = errorYear !== '' || errorMonth !== '' || errorDay !== '';
+
 	function buttonOnClick() {
 		let _isValidYear = isValidYear(year);
 		let _isValidMonth = isValidMonth(month);
@@ -22,28 +23,29 @@
 			let calculatedDay = calculateDay(day);
 
 			if (calculatedDay < 0) {
-				calculatedMonth = calculatedMonth - 1;
+				calculatedMonth -= 1;
 				const currentDate = new Date();
 				const lastMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0);
 				calculatedDay += lastMonth.getDate();
 			}
 			if (calculatedMonth < 0) {
-				calculatedYear = calculatedYear - 1;
-				calculatedMonth = calculatedMonth + 12;
+				calculatedYear -= 1;
+				calculatedMonth += 12;
 			}
-
 			yearLabel = `${calculatedYear}`;
 			dayLabel = `${calculatedDay}`;
 			monthLabel = `${calculatedMonth}`;
 		} else {
-			yearLabel = '--';
-			dayLabel = '--';
-			monthLabel = '--';
+			resetLabels();
 		}
 	}
 	function isValidYear(year: string): boolean {
 		errorYear = '';
 		let parsedValue = parseInt(year);
+		if (year.trim() === '') {
+			errorYear = 'The field is required';
+			return false;
+		}
 		if (isNaN(parsedValue)) {
 			errorYear = 'Must be a valid number';
 			return false;
@@ -59,6 +61,7 @@
 	function isValidMonth(month: string): boolean {
 		errorMonth = '';
 		let parsedValue = parseInt(month);
+
 		if (isNaN(parsedValue)) {
 			errorMonth = 'Must be a valid number';
 			return false;
@@ -87,20 +90,21 @@
 		return isValid;
 	}
 	function calculateYear(year: string) {
-		const currentDate = new Date();
-		const currentYear = currentDate.getFullYear();
+		const currentYear = new Date().getFullYear();
 		return currentYear - parseInt(year);
 	}
 	function calculateMonth(month: string) {
-		const currentDate = new Date();
-		const currentMonth = currentDate.getMonth();
+		const currentMonth = new Date().getMonth();
 		return currentMonth - parseInt(month) + 1;
 	}
 
-	function calculateDay(day: string) {
-		const currentDate = new Date();
-		const currentDay = currentDate.getDate();
-		return currentDay - parseInt(day);
+	function calculateDay(day: string): number {
+		return new Date().getDate() - parseInt(day);
+	}
+	function resetLabels() {
+		yearLabel = '--';
+		dayLabel = '--';
+		monthLabel = '--';
 	}
 </script>
 
@@ -148,13 +152,13 @@
 					@apply flex flex-col  justify-between text-[var(--smokey-grey)]  font-bold;
 
 					& input {
-						@apply p-3 rounded-xl border border-[var(--smokey-grey)] text-2xl cursor-pointer outline-[var(--purple)] md:w-32 text-black;
+						@apply p-3 mt-1 rounded-xl border border-[var(--smokey-grey)] text-2xl cursor-pointer outline-[var(--purple)] md:w-32 text-black;
 					}
 					& span:first-child {
-						@apply tracking-[3.5px] mb-1;
+						@apply tracking-[3.5px];
 					}
 					& span:last-child {
-						@apply text-sm font-normal mt-1;
+						@apply text-sm font-normal mt-1 h-4;
 					}
 				}
 				&.error label {
