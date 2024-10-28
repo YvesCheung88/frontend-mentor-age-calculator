@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" href="./favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+		<link href="./_app/immutable/assets/0.DwZ25U8B.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/2.BVkqU4RI.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.Df_mvRXJ.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/entry.Bm_jwkbO.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/scheduler.CtbWrGNo.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/paths.CEvtRrgM.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.D87DcVLd.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.D6X9qQLr.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/0.D_d3yphe.js">
+		<link rel="modulepreload" href="./_app/immutable/nodes/2.4b9bQ61t.js">
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">  <main class="svelte-pr5qt"><div class="calculator-container"><div class="inputs"><label><span data-svelte-h="svelte-vxajr0">DAY</span> <input type="text" placeholder="DD" value=""> <span></span></label> <label><span data-svelte-h="svelte-8x2y8o">MONTH</span> <input type="text" placeholder="MM" value=""> <span></span></label> <label><span data-svelte-h="svelte-lhjd1b">YEAR</span> <input type="text" placeholder="YYYY" value=""> <span></span></label></div> <div class="button-wrapper"><hr class="custom-hr"> <button data-svelte-h="svelte-11x3xen"><img src="./images/icon-arrow.svg" alt="button"></button></div> <div class="output"><span><span>--</span> years</span> <span><span>--</span> months</span> <span><span>--</span> days</span></div></div> </main> 
+			
+			<script>
+				{
+					__sveltekit_dpd9fc = {
+						base: new URL(".", location).pathname.slice(0, -1),
+						assets: "/frontend-mentor-age-calculator"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					const data = [null,null];
+
+					Promise.all([
+						import("./_app/immutable/entry/start.Df_mvRXJ.js"),
+						import("./_app/immutable/entry/app.D87DcVLd.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 2],
+							data,
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+	</body>
+</html>
