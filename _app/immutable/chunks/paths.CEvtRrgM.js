@@ -1,1 +1,0 @@
-var s;const e=((s=globalThis.__sveltekit_dpd9fc)==null?void 0:s.base)??"/frontend-mentor-age-calculator";var a;const t=((a=globalThis.__sveltekit_dpd9fc)==null?void 0:a.assets)??e;export{t as a,e as b};
