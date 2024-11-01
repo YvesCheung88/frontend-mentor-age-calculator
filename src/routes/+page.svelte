@@ -63,7 +63,10 @@
 	function isValidMonth(month: string): boolean {
 		errorMonth = '';
 		let parsedValue = parseInt(month);
-
+		if (year.trim() === '') {
+			errorMonth = 'The field is required';
+			return false;
+		}
 		if (isNaN(parsedValue)) {
 			errorMonth = 'Must be a valid number';
 			return false;
@@ -79,6 +82,10 @@
 	function isValidDay(day: string): boolean {
 		errorDay = '';
 		let parsedValue = parseInt(day);
+		if (year.trim() === '') {
+			errorDay = 'The field is required';
+			return false;
+		}
 		if (isNaN(parsedValue)) {
 			errorDay = 'Must be a valid number';
 			return false;
